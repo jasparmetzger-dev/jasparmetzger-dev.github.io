@@ -9,7 +9,15 @@
   <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231d1d1f'/%3E%3Ctext x='32' y='42' font-family='system-ui,sans-serif' font-size='28' font-weight='600' fill='white' text-anchor='middle'%3EJM%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css">
+  <script>
+    // Cache-busting without manual version numbers: GitHub Pages stamps every
+    // file with the deploy time, so the HTML's Last-Modified date changes on
+    // each deploy and CSS/JS/content are always loaded from the same deploy.
+    var V = Date.parse(document.lastModified) || Date.now();
+    function asset(tag) { document.write(tag.replace("?v", "?v=" + V)); }
+    asset('<link rel="stylesheet" href="styles.css?v">');
+  </script>
+  <noscript><link rel="stylesheet" href="styles.css"></noscript>
   <script>
     // Apply saved theme before paint to avoid a flash.
     (function () {
@@ -81,7 +89,9 @@
 
   <noscript><p class="wrap">This site needs JavaScript to render its content.</p></noscript>
 
-  <script src="content.js"></script>
-  <script src="app.js"></script>
+  <script>
+    asset('<script src="content.js?v"><\/script>');
+    asset('<script src="app.js?v"><\/script>');
+  </script>
 </body>
 </html>
