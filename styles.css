@@ -194,41 +194,34 @@ svg { flex: none; }
   border: 1px solid var(--line);
 }
 
-/* ── Projects ─────────────────────────────────────────── */
-.projects { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s4); }
-.project {
-  position: relative; display: flex; flex-direction: column; gap: var(--s3);
-  padding: var(--s6);
-  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
-}
-.project:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
-.project--featured { grid-column: 1 / -1; padding: var(--s7) var(--s6); }
-.project--featured .project__name { font-size: 32px; }
-.project--featured .project__desc { font-size: 19px; max-width: 56ch; }
-.project__top { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s4); }
-.project__name { font-size: 24px; line-height: 1.17; font-weight: 600; letter-spacing: -0.02em; }
-.project__name a { color: var(--text); display: inline-flex; align-items: center; gap: 6px; }
-.project__name a:hover { text-decoration: none; }
-.project__year { color: var(--text-3); font-size: 14px; }
-.project__desc { color: var(--text-2); flex: 1; }
-.project__foot {
-  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
-  gap: var(--s3); margin-top: var(--s2);
-}
-.project__links { display: flex; gap: var(--s4); position: relative; z-index: 2; }
+/* ── Projects: compact list ───────────────────────────── */
+.section--compact { padding-top: var(--s7); }
+.section__head--row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s4); margin-bottom: var(--s4); }
+.section--compact h2 { font-size: clamp(24px, 3vw, 28px); letter-spacing: -0.02em; }
 
-/* Make the whole card clickable */
-.stretched::after { content: ""; position: absolute; inset: 0; border-radius: var(--radius); }
-
-.arrow {
-  width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8;
-  stroke-linecap: round; stroke-linejoin: round; color: var(--text-3);
-  transition: transform 0.3s var(--ease), color 0.3s var(--ease);
+.proj-list { padding: 0 var(--s5); display: grid; grid-template-columns: max-content 1fr auto; column-gap: var(--s5); }
+.proj {
+  position: relative; display: grid; grid-column: 1 / -1; grid-template-columns: subgrid;
+  align-items: baseline; padding: var(--s3) 0; border-top: 1px solid var(--line);
 }
-.project:hover .arrow { transform: translate(2px, -2px); color: var(--accent); }
+.proj:first-child { border-top: 0; }
+.proj__name { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; }
+.proj__name a { color: var(--text); display: inline-flex; align-items: center; gap: 4px; }
+.proj__name a:hover { text-decoration: none; }
+.proj:hover .proj__name a { color: var(--accent); }
+.proj:hover .arrow { transform: translate(2px, -2px); color: var(--accent); }
+.proj__desc { font-size: 14px; color: var(--text-2); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.proj__meta { font-size: 12px; color: var(--text-3); white-space: nowrap; }
 
 .textlink { display: inline-flex; align-items: center; gap: 2px; font-size: 15px; }
 .chev { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.stretched::after { content: ""; position: absolute; inset: 0; }
+.arrow {
+  width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8;
+  stroke-linecap: round; stroke-linejoin: round; color: var(--text-3);
+  transition: transform 0.3s var(--ease), color 0.3s var(--ease);
+}
+.lang-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; }
 
 .tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .tag {
@@ -236,30 +229,6 @@ svg { flex: none; }
   padding: 4px 10px; border-radius: 980px;
   background: var(--tag-bg); color: var(--text-2);
 }
-
-/* ── More on GitHub (auto-loaded list) ───────────────── */
-.repos { margin-top: var(--s7); }
-.repos[hidden] { display: none; }
-.repos__head {
-  display: flex; align-items: baseline; justify-content: space-between; gap: var(--s4);
-  margin-bottom: var(--s3);
-}
-.repos__title { font-size: 21px; font-weight: 600; letter-spacing: -0.02em; }
-.repos__all { font-size: 15px; display: inline-flex; align-items: center; gap: 2px; }
-.repo-list { padding: 0 var(--s5); }
-.repo {
-  position: relative; display: grid; grid-template-columns: 1fr auto; gap: 2px var(--s4);
-  align-items: baseline; padding: var(--s4) 0; border-top: 1px solid var(--line);
-}
-.repo:first-child { border-top: 0; }
-.repo__name { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
-.repo__name a { color: var(--text); display: inline-flex; align-items: center; gap: 4px; }
-.repo__name a:hover { text-decoration: none; }
-.repo:hover .repo__name a { color: var(--accent); }
-.repo:hover .arrow { transform: translate(2px, -2px); color: var(--accent); }
-.repo__meta { font-size: 13px; color: var(--text-3); white-space: nowrap; display: flex; align-items: center; gap: var(--s3); }
-.repo__desc { grid-column: 1 / -1; font-size: 15px; color: var(--text-2); }
-.lang-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--text-3); margin-right: 5px; vertical-align: 0; }
 
 /* ── Timeline: date column + details (Material list style) ── */
 .timeline { --date-col: 9.5rem; --gap: var(--s5); padding: var(--s2) var(--s6); }
@@ -326,7 +295,7 @@ svg { flex: none; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
-  .project, .arrow { transition: none; }
+  .arrow { transition: none; }
 }
 
 /* ── Responsive ───────────────────────────────────────── */
@@ -337,12 +306,12 @@ svg { flex: none; }
   .hero { padding: var(--s8) 0 var(--s7); }
   .hero__intro { font-size: 17px; }
   .section { padding: var(--s7) 0; }
-  .projects, .skills { grid-template-columns: 1fr; }
-  .project, .project--featured { padding: var(--s5); }
-  .project--featured .project__name { font-size: 26px; }
-  .project--featured .project__desc { font-size: 17px; }
+  .skills { grid-template-columns: 1fr; }
+  .proj-list { display: block; }
+  .proj { grid-template-columns: 1fr; gap: 2px; }
+  .proj__desc { white-space: normal; }
+  .proj__meta { white-space: normal; }
   .timeline { padding: var(--s1) var(--s5); }
-  .repo { grid-template-columns: 1fr; }
   .entry__head { padding-left: 0; flex-direction: column; gap: 0; }
   .role { grid-template-columns: 1fr; }
   .role__date { text-align: left; order: 2; margin-top: 2px; }
@@ -358,12 +327,10 @@ svg { flex: none; }
 
 /* ── Print: a clean one-column CV ─────────────────────── */
 @media print {
-  .nav, .hero__actions, .footer__links, .skip, .project__links { display: none !important; }
+  .nav, .hero__actions, .footer__links, .skip { display: none !important; }
   body { background: #fff; color: #000; font-size: 11pt; }
   .reveal { opacity: 1; transform: none; }
   .card { box-shadow: none; border: 0; }
   .hero, .section { padding: 12pt 0; }
-  .project:hover { transform: none; }
-  .projects { grid-template-columns: 1fr 1fr; }
-  .entry, .project { break-inside: avoid; }
+  .entry, .proj { break-inside: avoid; }
 }

@@ -8,7 +8,7 @@ Personal website — plain HTML/CSS/JS, no build step, served by GitHub Pages.
 
 | I want to…                     | Do this in `content.js`                                              |
 | ------------------------------ | -------------------------------------------------------------------- |
-| Showcase a new repository      | Copy an object in `projects`, change `name`, `description`, `tags`, `repo`. Set `featured: true` to make it the wide card on top. |
+| Showcase a new repository      | Copy an object in `projects`, change `name`, `description`, `tags`, `repo`. Order in the file = order on the page. |
 | Add a job / programme / award  | Add an entry at the **top** of the matching section in `sections`.   |
 | Add a second role at one place | Add another object to that entry's `roles` (newest first).           |
 | Add a whole new section        | Add `{ id: "awards", title: "Awards", entries: [...] }` to `sections` — it appears in the nav automatically. |
@@ -16,7 +16,7 @@ Personal website — plain HTML/CSS/JS, no build step, served by GitHub Pages.
 
 ### GitHub repos appear automatically
 
-Under the project cards, a **More on GitHub** list is loaded live from the GitHub API. It shows your public repos that are *not* already a project card, skipping forks, archived repos and anything in `github.exclude`. So: push a new public repo and it appears on its own; promote it to a card by adding it to `projects`; hide it by adding its name to `exclude` (or archiving it on GitHub). The list is cached in the visitor's browser for an hour and hides itself if GitHub can't be reached.
+The **Projects** list at the bottom of the page is completed live from the GitHub API: after your `projects` entries it shows your public repos that are *not* already listed, skipping forks, archived repos and anything in `github.exclude`. So: push a new public repo and it appears on its own; give it a better description by adding it to `projects`; hide it by adding its name to `exclude` (or archiving it on GitHub). The list is cached in the visitor's browser for an hour and falls back to just your `projects` entries if GitHub can't be reached.
 
 Dates are `"YYYY-MM"`, `"YYYY"` or `"present"`. In any text, `*word*` becomes italic and `` `word` `` becomes code.
 
