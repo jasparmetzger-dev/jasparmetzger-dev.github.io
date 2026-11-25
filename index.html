@@ -49,23 +49,6 @@
       </div>
     </section>
 
-    <section class="section" id="projects" aria-labelledby="projects-title">
-      <div class="wrap">
-        <header class="section__head">
-          <h2 id="projects-title" data-i18n="projects">Projects</h2>
-          <p class="section__sub" data-i18n="projectsSub">Things I've built. Most of the code is on GitHub.</p>
-        </header>
-        <div class="projects" id="project-grid"></div>
-        <div class="repos" id="repos" hidden>
-          <div class="repos__head">
-            <h3 class="repos__title" data-i18n="moreRepos">More on GitHub</h3>
-            <a class="repos__all" id="repos-all" target="_blank" rel="noopener"></a>
-          </div>
-          <ul class="card repo-list" id="repo-list"></ul>
-        </div>
-      </div>
-    </section>
-
     <div id="timeline-sections"></div>
 
     <section class="section" id="skills" aria-labelledby="skills-title">
@@ -74,6 +57,16 @@
           <h2 id="skills-title" data-i18n="skills">Skills</h2>
         </header>
         <div class="skills" id="skills-grid"></div>
+      </div>
+    </section>
+
+    <section class="section section--compact" id="projects" aria-labelledby="projects-title">
+      <div class="wrap">
+        <header class="section__head section__head--row">
+          <h2 id="projects-title" data-i18n="projects">Projects</h2>
+          <a class="textlink" id="repos-all" target="_blank" rel="noopener"></a>
+        </header>
+        <ul class="card proj-list" id="project-list"></ul>
       </div>
     </section>
   </main>

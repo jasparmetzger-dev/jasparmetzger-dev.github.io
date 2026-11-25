@@ -11,42 +11,30 @@
   var UI = {
     en: {
       projects: "Projects",
-      projectsSub: "Things I've built. Most of the code is on GitHub.",
       skills: "Skills",
       contact: "Contact",
       contactTitle: "Get in touch.",
-      code: "Code",
-      live: "Live",
       cv: "Download CV",
       present: "Present",
       skip: "Skip to content",
       theme: "Toggle dark mode",
       lang: "Language",
       months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-      moreRepos: "More on GitHub",
       allRepos: "All repositories",
-      updated: "Updated",
-      stars: "stars",
       description: "mathematics student in Bonn, research assistant at Fraunhofer ITWM. Projects, experience and CV.",
     },
     de: {
       projects: "Projekte",
-      projectsSub: "Dinge, die ich gebaut habe. Der Code liegt größtenteils auf GitHub.",
       skills: "Kenntnisse",
       contact: "Kontakt",
       contactTitle: "Schreib mir.",
-      code: "Code",
-      live: "Live",
       cv: "Lebenslauf herunterladen",
       present: "heute",
       skip: "Zum Inhalt springen",
       theme: "Dunkelmodus umschalten",
       lang: "Sprache",
       months: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
-      moreRepos: "Weitere Repositories",
       allRepos: "Alle Repositories",
-      updated: "Aktualisiert",
-      stars: "Sterne",
       description: "Mathematikstudent in Bonn, wissenschaftliche Hilfskraft am Fraunhofer ITWM. Projekte, Erfahrung und Lebenslauf.",
     },
   };
@@ -131,33 +119,6 @@
     if (t(S.cv)) actions.push(link(S.cv, esc(ui("cv")), "btn btn--secondary"));
     $("hero-actions").innerHTML = actions.join("");
 
-    /* Projects */
-    var projects = (S.projects || []).slice().sort(function (a, b) {
-      return (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
-    });
-    $("project-grid").innerHTML = projects.map(function (p) {
-      var links = [];
-      if (p.repo) links.push(link(p.repo, ui("code") + " " + CHEVRON, "textlink"));
-      if (p.demo) links.push(link(p.demo, ui("live") + " " + CHEVRON, "textlink"));
-      var main = p.demo || p.repo;
-      var name = esc(t(p.name));
-      return (
-        '<article class="card project' + (p.featured ? " project--featured" : "") + ' reveal">' +
-          '<div class="project__top">' +
-            '<h3 class="project__name">' + (main ? link(main, name + ARROW, "stretched") : name) + "</h3>" +
-            (p.year ? '<span class="project__year">' + esc(p.year) + "</span>" : "") +
-          "</div>" +
-          '<p class="project__desc">' + inline(p.description) + "</p>" +
-          '<div class="project__foot">' +
-            '<ul class="tags">' + (p.tags || []).map(function (tag) {
-              return '<li class="tag">' + esc(t(tag)) + "</li>";
-            }).join("") + "</ul>" +
-            (links.length ? '<div class="project__links">' + links.join("") + "</div>" : "") +
-          "</div>" +
-        "</article>"
-      );
-    }).join("");
-
     /* Timeline sections: date column on the left, details on the right */
     $("timeline-sections").innerHTML = (S.sections || []).map(function (sec) {
       var entries = (sec.entries || []).map(function (e) {
@@ -208,9 +169,8 @@
     }).join("");
 
     /* Nav */
-    var navItems = [{ id: "projects", title: ui("projects") }]
-      .concat((S.sections || []).map(function (s) { return { id: s.id, title: t(s.title) }; }))
-      .concat([{ id: "skills", title: ui("skills") }, { id: "contact", title: ui("contact") }]);
+    var navItems = (S.sections || []).map(function (s) { return { id: s.id, title: t(s.title) }; })
+      .concat([{ id: "skills", title: ui("skills") }, { id: "projects", title: ui("projects") }, { id: "contact", title: ui("contact") }]);
     $("nav-links").innerHTML = navItems.map(function (n) {
       return '<li><a href="#' + esc(n.id) + '" data-target="' + esc(n.id) + '">' + esc(n.title) + "</a></li>";
     }).join("");
@@ -222,7 +182,7 @@
     $("footer-meta").textContent =
       "© " + new Date().getFullYear() + " " + S.name + (S.location ? " · " + t(S.location) : "");
 
-    renderRepos();
+    renderProjects();
     observe(navItems);
   }
 
@@ -235,25 +195,37 @@
     TeX: "#3D6117", Rust: "#dea584", "Jupyter Notebook": "#DA5B0B",
   };
 
-  function renderRepos() {
-    var box = $("repos");
-    if (!repos || !repos.length) { box.hidden = true; return; }
-    box.hidden = false;
-    $("repos-all").href = "https://github.com/" + encodeURIComponent(GH.user) + "?tab=repositories";
-    $("repos-all").innerHTML = esc(ui("allRepos")) + " " + CHEVRON;
-    $("repo-list").innerHTML = repos.map(function (r) {
-      var meta = [];
-      if (r.language) {
-        meta.push('<span><i class="lang-dot" style="background:' + (LANG_COLORS[r.language] || "var(--text-3)") +
-          '"></i>' + esc(r.language) + "</span>");
-      }
-      if (r.stars) meta.push('<span title="' + ui("stars") + '">★ ' + r.stars + "</span>");
-      if (r.pushed) meta.push("<span>" + ui("updated") + " " + fmtDate(r.pushed.slice(0, 7)) + "</span>");
+  // Curated projects first, then auto-loaded repos, as one compact list.
+  function renderProjects() {
+    var rows = (S.projects || []).map(function (p) {
+      return {
+        name: t(p.name), url: t(p.demo || p.repo), desc: inline(p.description),
+        meta: (p.tags || []).map(t).join(" · "),
+      };
+    }).concat((repos || []).map(function (r) {
+      return {
+        name: r.name, url: r.url, desc: r.description ? esc(r.description) : "",
+        meta: r.language || "", color: LANG_COLORS[r.language],
+      };
+    }));
+
+    $("projects").hidden = !rows.length;
+    $("repos-all").hidden = !GH.user;
+    if (GH.user) {
+      $("repos-all").href = "https://github.com/" + encodeURIComponent(GH.user) + "?tab=repositories";
+      $("repos-all").innerHTML = esc(ui("allRepos")) + " " + CHEVRON;
+    }
+    $("project-list").innerHTML = rows.map(function (r) {
+      var name = esc(r.name) + ARROW;
       return (
-        '<li class="repo">' +
-          '<h4 class="repo__name">' + link(r.url, esc(r.name) + ARROW, "stretched") + "</h4>" +
-          '<div class="repo__meta">' + meta.join("") + "</div>" +
-          (r.description ? '<p class="repo__desc">' + esc(r.description) + "</p>" : "") +
+        '<li class="proj">' +
+          '<h3 class="proj__name">' + (r.url ? link(r.url, name, "stretched") : name) + "</h3>" +
+          '<p class="proj__desc">' + r.desc + "</p>" +
+          (r.meta
+            ? '<span class="proj__meta">' +
+                (r.color ? '<i class="lang-dot" style="background:' + r.color + '"></i>' : "") +
+                esc(r.meta) + "</span>"
+            : "") +
         "</li>"
       );
     }).join("");
@@ -274,7 +246,7 @@
           excluded.indexOf(r.name.toLowerCase()) < 0 &&
           !shown[r.url.toLowerCase()];
       }).slice(0, GH.limit || 8);
-      renderRepos();
+      renderProjects();
     }
 
     // Cache for an hour — GitHub allows 60 unauthenticated requests/hour per visitor.

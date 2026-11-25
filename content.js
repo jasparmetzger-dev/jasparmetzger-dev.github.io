@@ -57,7 +57,7 @@ window.SITE = {
 
   /* ── GitHub auto-list ──────────────────────────────────────
    *  Your public repos are fetched from GitHub on page load and shown
-   *  under "More on GitHub" — except ones already in `projects` below,
+   *  at the end of the Projects list — except ones already in `projects` below,
    *  forks, archived repos, and anything in `exclude`.
    *  Set `user: null` to turn this off.
    */
@@ -73,13 +73,11 @@ window.SITE = {
    *  tags         list of short labels (languages, frameworks)
    *  repo         GitHub URL (optional)
    *  demo         live URL (optional)
-   *  year         optional
-   *  featured     true → shown as a wide card at the top
+   *  (listed in this order, above the auto-loaded GitHub repos)
    */
   projects: [
     {
       name: "ml_lib_2",
-      featured: true,
       description: {
         en:
           "Classical machine learning from scratch using only the Python standard library — " +
